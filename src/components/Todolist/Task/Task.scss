@@ -1,0 +1,47 @@
+.Task {
+  position: relative;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 6px RGBA(0,0,0, 0.16);
+  border-radius: 5px;
+  padding: 10px;
+  overflow: hidden;
+
+  h3 {
+    font-size: 16px;
+    line-height: 21px;
+    font-weight: bold;
+  }
+
+  &:after {
+    position: absolute;
+    top: -12px;
+    right: -13px;
+    width: 26px;
+    height: 24px;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px RGBA(0,0,0, 0.16);
+    content: '';
+  }
+
+  &.priority-0:after {
+    background: #FF9900;
+  }
+
+  &.priority-1:after {
+    background: #FFF700;
+  }
+
+  &.priority-2:after {
+    background: #00FF44;
+  }
+
+  &.priority-999:after {
+    background: #00CBFF;
+  }
+
+  .main-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

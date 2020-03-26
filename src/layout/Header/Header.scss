@@ -1,0 +1,23 @@
+@import '../../assets/scss/vars.scss';
+
+.Header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $brand-primary;
+    color: #fff;
+    padding: 13px 15px;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 800px;
+    width: 100%;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 3px 6px RGBA(0,0,0, 0.16);
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+}

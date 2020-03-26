@@ -1,0 +1,19 @@
+.App {
+  max-width: 800px;
+  margin: 50px auto 0;
+}
+
+.svg-inline--fa {
+  opacity: 0.8;
+  transition: .2s;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+main {
+  background: #fff;
+  min-height: calc(100vh - 79px);
+  padding: 15px;
+}
