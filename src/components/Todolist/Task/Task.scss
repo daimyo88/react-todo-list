@@ -35,13 +35,32 @@
     background: #00FF44;
   }
 
-  &.priority-999:after {
+  &.priority-3:after {
     background: #00CBFF;
+  }
+
+  &.complete {
+    background: RGBA(0, 203, 255, 0.1);
+    color: #ADADAD;
+
+    h3 {
+      text-decoration: line-through;
+    }
+  }
+
+  &.description-open {
+    .description-toggler svg {
+      transform: scaleY(-1) translateY(1px);
+    }
   }
 
   .main-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .description {
+    padding-top: 10px;
   }
 }

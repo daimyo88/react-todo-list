@@ -1,48 +1,52 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import AuxWrapper from '../../wrappers/AuxWrapper';
 import Task from './Task/Task';
+import ButtonContainer from '../../ui/buttons/ButtonContainer/ButtonContainer';
+import Button from '../../ui/buttons/Button/Button';
 
-class Todolist extends Component {
-  state = {
-    tasks : [
-      {
-        id : '1111',
-        title: 'Task1',
-        description: 'Lorem Ipsum',
-        priority: '0'
-      },
-      {
-        id : '2222',
-        title: 'Task2',
-        description: 'Lorem Ipsum',
-        priority: '1'
-      },
-      {
-        id : '3333',
-        title: 'Task3',
-        description: 'Lorem Ipsum',
-        priority: '2'
-      }
-    ]
-  }
+import './Todolist.scss';
 
-  render() {
-    const tasks = this.state.tasks.map((el, i) => {
-            return (
-              <Task
-                key = {i}
-                task = {el}
-              />
-            )
-          });
+const Todolist = (props) => {
+  const incompleteTasks = props.tasks.filter(el => {
+    if (el.status === false) {
+      return el;
+    }
+    return null;
+  });
+
+  const header = (
+    <div className="todo-list-header">
+      <p>You have {incompleteTasks.length} task(s) to do: </p>
+      <ButtonContainer>
+        <Button type="confirm" title="add new task" clickHandler={props.addNewTask}/>
+      </ButtonContainer>
+    </div>
+  )
+
+  let tasks = [...props.tasks];
+  tasks = tasks
+    .sort((a, b) => a.priority - b.priority)
+    .sort((a, b) => a.status - b.status)
+    .map((el, i) => {
+          return (
+            <Task
+              setCurrentTask={(task) => props.setCurrentTask(task)}
+              key = {i}
+              task = {el}
+              toggleDescription = {(id) => props.toggleDescription(id)}
+              setModal = {(type) => props.setModal(type)}
+            />
+          )
+        });
 
     return (
       <AuxWrapper>
+        { header }
         { tasks }
       </AuxWrapper>
     )
-  }
+
 
 }
 

@@ -6,18 +6,38 @@ import TaskControls from './TaskControls/TaskControls';
 
 const Task = (props) => {
 
-  const cssClass = 'Task priority-' + props.task.priority;
+  const cssClass = ['Task'];
+  cssClass.push('Task priority-' + props.task.priority);
+  if(props.task.status === true) {
+    cssClass.push('complete');
+  }
+  if(props.task.descriptionOpen === true) {
+    cssClass.push('description-open');
+  }
+
+  const mainBar = (
+    <div className="main-bar" onClick={(task) => props.setCurrentTask(props.task)}>
+      <h3>
+        {props.task.title}
+      </h3>
+      <TaskControls
+        task={props.task}
+        toggleDescription = {(id) => props.toggleDescription(id)}
+        setModal = {(type) => props.setModal(type)}
+      />
+    </div>
+  )
+
+  const description = (props.task.description !== '' && props.task.descriptionOpen === true) ? (
+    <div className="description">
+      { props.task.description }
+    </div>
+  ) : null;
 
   return (
-    <div className={cssClass}>
-      <div className="main-bar">
-        <h3>
-          {props.task.title}
-        </h3>
-        <TaskControls
-          task={props.task}
-        />
-      </div>
+    <div className={cssClass.join(' ')}>
+      { mainBar }
+      { description }
     </div>
   )
 }

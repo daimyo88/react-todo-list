@@ -1,0 +1,22 @@
+@import '../../../assets/scss/vars.scss';
+
+.Button {
+  display: inline-block;
+  border: 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  width: 131px;
+  line-height: 31px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &.confirm {
+    background: $brand-primary;
+  }
+
+  &.decline {
+    background: $grey;
+  }
+}

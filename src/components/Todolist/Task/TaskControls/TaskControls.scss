@@ -1,15 +1,23 @@
 @import '../../../../assets/scss/vars.scss';
 
 .TaskControls {
+  display: flex;
   .item {
     width: 24px;
     height: 24px;
     display: flex;
+    margin-left: 5px;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
     box-shadow: 0 3px 6px RGBA(0,0,0, 0.16);
     color: $brand-primary;
     font-size: 15px;
+    background: #fff;
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+      box-shadow: 0 4px 6px RGBA(0,0,0, 0.4);
+    }
   }
 }

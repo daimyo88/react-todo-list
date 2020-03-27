@@ -1,0 +1,10 @@
+.ButtonContainer {
+  display: flex;
+  &.center {
+    justify-content: center;
+
+    .Button {
+      margin: 0 16px;
+    }
+  }
+}
