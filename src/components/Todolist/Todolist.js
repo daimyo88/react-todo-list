@@ -19,7 +19,7 @@ const Todolist = (props) => {
     <div className="todo-list-header">
       <p>You have {incompleteTasks.length} task(s) to do: </p>
       <ButtonContainer>
-        <Button type="confirm" title="add new task" clickHandler={props.addNewTask}/>
+        <Button type="confirm" title="add new task" clickHandler={() => props.setModal('newTask')}/>
       </ButtonContainer>
     </div>
   )
@@ -34,7 +34,7 @@ const Todolist = (props) => {
               setCurrentTask={(task) => props.setCurrentTask(task)}
               key = {i}
               task = {el}
-              toggleDescription = {(id) => props.toggleDescription(id)}
+              toggleDescription = {props.toggleDescription}
               setModal = {(type) => props.setModal(type)}
             />
           )

@@ -22,8 +22,8 @@ const Task = (props) => {
       </h3>
       <TaskControls
         task={props.task}
-        toggleDescription = {(id) => props.toggleDescription(id)}
-        setModal = {(type) => props.setModal(type)}
+        toggleDescription = {props.toggleDescription}
+        setModal = {props.setModal}
       />
     </div>
   )

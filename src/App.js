@@ -15,13 +15,22 @@ import Backdrop from './ui/Backdrop/Backdrop';
 import ButtonContainer from './ui/buttons/ButtonContainer/ButtonContainer';
 import Button from './ui/buttons/Button/Button';
 import AuxWrapper from './wrappers/AuxWrapper';
+import TaskForm from './components/TaskForm/TaskForm';
+
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       user : 'Denys',
-      currentTask : {},
+      currentTask : {
+        id : '666',
+        title: 'testtset',
+        description: 'testest',
+        priority: '0',
+        status : false,
+        descriptionOpen : false
+      },
       modal : {
           display : false,
           type : 'delete',
@@ -85,20 +94,19 @@ class App extends Component {
   closeModal = () => {
     this.setState((state) => {
       return {
-        currentTask : {},
+        currentTask : {
+          id : '666',
+          title: 'testtset',
+          description: 'testest',
+          priority: '0',
+          status : false,
+          descriptionOpen : false
+        },
         modal : {
             display : false
         }
       }
     })
-  }
-
-  setCurrentTask = (task) => {
-    this.setState((state) => {
-      return {
-        currentTask : task
-      }
-    });
   }
 
   setModal = (type) => {
@@ -110,6 +118,14 @@ class App extends Component {
         }
       }
     })
+  }
+
+  setCurrentTask = (task) => {
+    this.setState((state) => {
+      return {
+        currentTask : task
+      }
+    });
   }
 
   toggleDescription = (id) => {
@@ -133,19 +149,18 @@ class App extends Component {
     this.setState({tasks})
   }
 
+  addNewTask = () => {
+    this.setState((state) => {
+      let tasks = [...state.tasks];
+      tasks.unshift(state.currentTask);
+      return {
+        tasks
+      }
+    })
+  }
+
   render() {
     this.library.add(faSignOutAlt, faTrash, faPen, faCheck, faArrowUp, faChevronDown );
-
-    let mainContent = (this.state.user !== null) ? (
-      <Todolist
-        tasks={this.state.tasks}
-        toggleDescription = {(id) => this.toggleDescription(id)}
-        setCurrentTask = {(task) => this.setCurrentTask(task)}
-        setModal = {(type) => this.setModal(type)}
-      />
-    ) : (
-      <p>Greeting Anon</p>
-    )
 
     let modalContent = '';
     let confirmHandler = '';
@@ -153,7 +168,7 @@ class App extends Component {
     switch(this.state.modal.type) {
       case 'delete':
       modalContent = ReactHtmlParser(`<p>Do you realy want to delete <b>${this.state.currentTask.title}</b> task?</p>`);
-      confirmHandler = (id) => {
+      confirmHandler = () => {
         this.deleteTask(this.state.currentTask.id);
         this.closeModal();
       }
@@ -161,7 +176,7 @@ class App extends Component {
 
       case 'complete':
       modalContent = ReactHtmlParser(`<p>Do you realy want to complete <b>${this.state.currentTask.title}</b> task?</p>`);
-      confirmHandler = (id) => {
+      confirmHandler = () => {
         this.changeStatusTask(this.state.currentTask.id, true);
         this.closeModal();
       }
@@ -169,8 +184,16 @@ class App extends Component {
 
       case 'incomplete':
       modalContent = ReactHtmlParser(`<p>Do you realy want to mark <b>${this.state.currentTask.title}</b> task as not complete?</p>`);
-      confirmHandler = (id) => {
+      confirmHandler = () => {
         this.changeStatusTask(this.state.currentTask.id, false);
+        this.closeModal();
+      }
+      break;
+
+      case 'newTask':
+      modalContent = (<TaskForm task={this.state.currentTask} />)
+      confirmHandler = () => {
+        this.addNewTask();
         this.closeModal();
       }
       break;
@@ -178,6 +201,17 @@ class App extends Component {
       default:
        modalContent = '';
     }
+
+    let mainContent = (this.state.user !== null) ? (
+      <Todolist
+        tasks={this.state.tasks}
+        toggleDescription = {this.toggleDescription}
+        setCurrentTask = {this.setCurrentTask}
+        setModal = {this.setModal}
+      />
+    ) : (
+      <p>Greeting Anon</p>
+    )
 
     const modal = this.state.modal.display === true ? (
       <AuxWrapper>
