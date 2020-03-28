@@ -1,0 +1,35 @@
+@import './vars.scss';
+
+.input-block {
+  margin-bottom: 10px;
+}
+
+.input-label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  &.additional-margin {
+    margin-bottom: 10px;
+  }
+}
+
+.validation-message {
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: #E10404;
+}
+
+input[type=text], textarea {
+  display: block;
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 14px;
+  border: 0;
+  box-shadow: 0 3px 6px RGBA(0,0,0, 0.16);
+}
+
+textarea {
+  font-family: inherit;
+  resize: none;
+  height: 140px;
+}

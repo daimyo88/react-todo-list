@@ -23,7 +23,7 @@ const Task = (props) => {
       <TaskControls
         task={props.task}
         toggleDescription = {props.toggleDescription}
-        setModal = {props.setModal}
+        setAction = {props.setAction}
       />
     </div>
   )

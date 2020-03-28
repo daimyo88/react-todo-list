@@ -1,0 +1,61 @@
+@import '../../../assets/scss/vars.scss';
+
+.TaskForm {
+  .input-block {
+
+    &:last-child {
+      margin-bottom: 40px;
+    }
+  }
+
+  .checkbox-item  {
+    margin-bottom: 5px;
+
+    &.priority-high label:before {
+      background: #FF9900;
+    }
+
+    &.priority-medium label:before {
+      background: #FFF700;
+    }
+
+    &.priority-low label:before {
+      background: #00FF44;
+    }
+
+    input {
+      display: none;
+      &:checked + label {
+        font-weight: bold;
+        &:after {
+          border: 1px solid $brand-primary;
+          width: 18px;
+          height: 18px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          border-radius: 50%;
+          content: '';
+        }
+      }
+    }
+
+    label {
+      display: block;
+      position: relative;
+      height: 20px;
+      padding-left: 30px;
+      cursor: pointer;
+      &:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        content: '';
+      }
+    }
+  }
+
+}

@@ -19,7 +19,7 @@ const TaskControls = (props) => {
           <div className="item"
             onClick={
               () => {
-                props.setModal('complete');
+                props.setAction('complete');
               }
           }>
             <FontAwesomeIcon icon="check" />
@@ -28,7 +28,7 @@ const TaskControls = (props) => {
           <div className="item"
               onClick={
                 () => {
-                  props.setModal('incomplete');
+                  props.setAction('incomplete');
                 }
             }>
             <FontAwesomeIcon icon="arrow-up" />
@@ -36,13 +36,18 @@ const TaskControls = (props) => {
         )
       }
 
-      <div className="item">
+      <div className="item"
+        onClick={
+          () => {
+            props.setAction('editTask');
+          }
+        }>
         <FontAwesomeIcon icon="pen" />
       </div>
       <div className="item"
         onClick={
           () => {
-            props.setModal('delete');
+            props.setAction('delete');
           }
         }>
         <FontAwesomeIcon icon="trash" />
