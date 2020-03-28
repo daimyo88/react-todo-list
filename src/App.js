@@ -44,6 +44,10 @@ class App extends Component {
     this.checkUser();
   }
 
+  componentDidMount() {
+    this.checkUser();
+  }
+
 
   render() {
     this.library.add(faSignOutAlt, faTrash, faPen, faCheck, faArrowUp, faChevronDown );
