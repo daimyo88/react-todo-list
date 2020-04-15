@@ -1,6 +1,5 @@
 import React , { Component } from 'react';
 
-import AuxWrapper from '../../../wrappers/AuxWrapper';
 import ButtonContainer from '../../../ui/buttons/ButtonContainer/ButtonContainer';
 import Button from '../../../ui/buttons/Button/Button';
 import Modal from '../../../ui/modals/Modal/Modal';
@@ -36,7 +35,7 @@ class UserLogout extends Component {
     )
 
     const modal = this.state.modal === true ? (
-      <AuxWrapper>
+      <React.Fragment>
         <Backdrop clickHandler = {() => this.toggleModal(false)} />
         <Modal>
           <p>Do you want to logout? <br /> All tasks will be deleted</p>
@@ -45,14 +44,14 @@ class UserLogout extends Component {
             <Button type="decline" title="cancel" clickHandler={() => this.toggleModal(false)}  />
           </ButtonContainer>
         </Modal>
-      </AuxWrapper>
+      </React.Fragment>
     ) : null;
 
     return (
-      <AuxWrapper>
+      <React.Fragment>
         { userMessage }
         { modal }
-      </AuxWrapper>
+      </React.Fragment>
     )
   }
 

@@ -1,135 +1,40 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import AuxWrapper from '../../wrappers/AuxWrapper';
 import Task from './Task/Task';
 import TaskForm from './TaskForm/TaskForm';
+
 import ButtonContainer from '../../ui/buttons/ButtonContainer/ButtonContainer';
 import Button from '../../ui/buttons/Button/Button';
 import Modal from '../../ui/modals/Modal/Modal';
 import Backdrop from '../../ui/Backdrop/Backdrop';
+import Loader from '../../ui/Loader/Loader';
+
+import * as actions from '../../store/actions/tasksActions';
 
 import './Todolist.scss';
 
 class Todolist extends Component {
-  constructor() {
-    super();
 
-    this.state = {
-      currentTask : '',
-      currentAction : '',
-      tasks : []
-    }
-  }
-
-  setAction = (type) => {
-    this.setState((state) => {
-      return {
-        currentAction : type
-      }
-    })
-  }
-
-  resetAction = (type) => {
-    this.setState((state) => {
-      return {
-        currentAction : '',
-        currentTask : ''
-      }
-    })
-  }
-
-  setCurrentTask = (task) => {
-    this.setState((state) => {
-      return {
-        currentTask : task
-      }
-    });
-  }
 
   toggleDescription = (id) => {
     const tasks = [...this.state.tasks];
     const i = tasks.findIndex(el => el.id === id);
     tasks[i].descriptionOpen = !tasks[i].descriptionOpen;
     this.setState((state) => {
-      this.setTasksToStorage(tasks);
+      
       return {
         tasks
       }
     })
-  }
-
-  deleteTask = (id) => {
-    let tasks = [...this.state.tasks];
-    const i = tasks.findIndex(el => el.id === id);
-    tasks.splice(i, 1);
-    this.setState((state) => {
-      this.setTasksToStorage(tasks);
-      return {
-        tasks : tasks,
-        currentAction : '',
-        currentTask : ''
-      }
-    })
-  }
-
-  changeStatusTask = (id, status) => {
-    let tasks = [...this.state.tasks];
-    const i = tasks.findIndex(el => el.id === id);
-    tasks[i].status = status;
-    this.setState((state) => {
-      this.setTasksToStorage(tasks);
-      return {
-        tasks : tasks,
-        currentAction : '',
-        currentTask : ''
-      }
-    })
-  }
-
-  editTask = (task) => {
-
-    this.setState((state) => {
-      let tasks = [...state.tasks];
-      const i = tasks.findIndex(el => el.id === task.id);
-      tasks[i]  = task;
-      this.setTasksToStorage(tasks);
-      return {
-        tasks
-      }
-    })
-  }
-
-  addNewTask = (task) => {
-    task.id = Date.now();
-    task.status = false;
-
-    this.setState((state) => {
-      let tasks = [...state.tasks];
-      tasks.unshift(task);
-      this.setTasksToStorage(tasks);
-      return {
-        tasks
-      }
-    });
-  }
-
-  setTasksToStorage = (tasks) => {
-    const tasksString = JSON.stringify(tasks);
-    localStorage.setItem('tasks', tasksString);
   }
 
   componentDidMount() {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    this.setState((state) => {
-      return {
-        tasks
-      }
-    })
+    this.props.getTasks();
   }
 
-
   render() {
-    const incompleteTasks = this.state.tasks.filter(el => {
+    const incompleteTasks = this.props.tasks.filter(el => {
       if (el.status === false) {
         return el;
       }
@@ -138,48 +43,48 @@ class Todolist extends Component {
 
     let modalContent = '';
 
-    switch(this.state.currentAction) {
+    switch(this.props.currentAction) {
       case 'delete':
       modalContent = (
-        <AuxWrapper>
-          <p>Do you realy want to delete task <b>{this.state.currentTask.title}</b> ?</p>
+        <React.Fragment>
+          <p>Do you realy want to delete task <b>{this.props.currentTask.title}</b> ?</p>
           <ButtonContainer type="center">
-            <Button type="confirm" title="ok" clickHandler={() => this.deleteTask(this.state.currentTask.id)}/>
-            <Button type="decline" title="cancel" clickHandler={this.resetAction} />
+            <Button type="confirm" title="ok" clickHandler={() => this.props.deleteTask(this.props.currentTask.id)}/>
+            <Button type="decline" title="cancel" clickHandler={this.props.resetAction} />
           </ButtonContainer>
-        </AuxWrapper>
+        </React.Fragment>
       );
       break;
 
       case 'complete':
       modalContent = (
-        <AuxWrapper>
-          <p>Do you realy want to mark task <b>{this.state.currentTask.title}</b> as complete?</p>
+        <React.Fragment>
+          <p>Do you realy want to mark task <b>{this.props.currentTask.title}</b> as complete?</p>
           <ButtonContainer type="center">
-            <Button type="confirm" title="ok" clickHandler={() => this.changeStatusTask(this.state.currentTask.id, true)}/>
-            <Button type="decline" title="cancel" clickHandler={this.resetAction} />
+            <Button type="confirm" title="ok" clickHandler={() => this.props.changeStatusTask(this.props.currentTask.id, true)}/>
+            <Button type="decline" title="cancel" clickHandler={this.props.resetAction} />
           </ButtonContainer>
-        </AuxWrapper>
+        </React.Fragment>
       )
       break;
 
       case 'incomplete':
       modalContent = (
-        <AuxWrapper>
-          <p>Do you realy want to mark task <b>{this.state.currentTask.title}</b> as not complete?</p>
+        <React.Fragment>
+          <p>Do you realy want to mark task <b>{this.props.currentTask.title}</b> as not complete?</p>
           <ButtonContainer type="center">
-            <Button type="confirm" title="ok" clickHandler={() => this.changeStatusTask(this.state.currentTask.id, false)}/>
-            <Button type="decline" title="cancel" clickHandler={this.resetAction} />
+            <Button type="confirm" title="ok" clickHandler={() => this.props.changeStatusTask(this.props.currentTask.id, false)}/>
+            <Button type="decline" title="cancel" clickHandler={this.props.resetAction} />
           </ButtonContainer>
-        </AuxWrapper>
+        </React.Fragment>
       )
       break;
 
       case 'editTask':
       modalContent = (<TaskForm
-        submitHandler = {this.editTask}
-        cancelHandler={this.resetAction}
-        task={this.state.currentTask}
+        submitHandler = {this.props.editTask}
+        cancelHandler={this.props.resetAction}
+        task={this.props.currentTask}
         />)
 
       break;
@@ -187,60 +92,87 @@ class Todolist extends Component {
       case 'newTask':
       modalContent = (
         <TaskForm
-          submitHandler = {this.addNewTask}
-          cancelHandler={this.resetAction}
-          task={this.state.currentTask} />
+          submitHandler = {this.props.addTask}
+          cancelHandler={this.props.resetAction}
+          task={''} />
       )
 
       break;
 
       default:
-       modalContent = '';
+       modalContent = null;
     }
 
     const header = (
       <div className="todo-list-header">
         <p>You have {incompleteTasks.length} task(s) to do: </p>
         <ButtonContainer>
-          <Button type="confirm" title="add new task" clickHandler={() => this.setAction('newTask')}/>
+          <Button type="confirm" 
+                  title="add new task" 
+                  clickHandler={() => {this.props.setAction('newTask'); this.props.setCurrentTask('')} }/>
         </ButtonContainer>
       </div>
     )
 
-    let tasks = [...this.state.tasks];
+    let tasks = [...this.props.tasks];
     tasks = tasks
       .sort((a, b) => a.priority - b.priority)
       .sort((a, b) => a.status - b.status)
       .map((el, i) => {
             return (
               <Task
-                setCurrentTask={(task) => this.setCurrentTask(task)}
+                setCurrentTask={(task) => this.props.setCurrentTask(task)}
                 key = {i}
                 task = {el}
-                toggleDescription = {this.toggleDescription}
-                setAction = {(type) => this.setAction(type)}
+                toggleDescription = {this.props.toggleDescription}
+                setAction = {(type) => this.props.setAction(type)}
               />
             )
           });
 
-      const modal = this.state.currentAction !== '' ? (
-        <AuxWrapper>
-          <Backdrop clickHandler = {this.resetAction} />
+      const modal = this.props.currentAction !== '' ? (
+        <React.Fragment>
+          <Backdrop clickHandler = {this.props.resetAction} />
           <Modal confirmHandler = {(id) => this.state.modals.handler } >
             {modalContent}
           </Modal>
-        </AuxWrapper>
+        </React.Fragment>
        ) : null;
 
       return (
-        <AuxWrapper>
-          { header }
-          { tasks }
+        <React.Fragment>
+          { this.props.pending === true ? <Loader /> : header }
+          { this.props.pending === true ? <Loader /> : tasks }
+
           { modal }
-        </AuxWrapper>
+
+        </React.Fragment>
       )
   }
 
 }
 
-export default Todolist;
+const mapStateToProps = state => {
+  return {
+    tasks: state.tsk.tasks,
+    pending: state.tsk.pending,
+    currentAction: state.tsk.currentAction,
+    currentTask: state.tsk.currentTask
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getTasks: () => dispatch(actions.getTasks()),
+    addTask: (task) => dispatch(actions.addTask(task)),
+    deleteTask: (id) => dispatch(actions.deleteTask(id)),
+    editTask: (task) => dispatch(actions.editTask(task)),
+    changeStatusTask: (id, status) => dispatch(actions.changeStatusTask(id, status)),
+    setAction: (type) => dispatch(actions.setAction(type)),
+    resetAction: () => dispatch(actions.resetAction()),
+    setCurrentTask: (task) => dispatch(actions.setCurrentTask(task)),
+    toggleDescription: (id) => dispatch(actions.toggleDescription(id)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todolist);

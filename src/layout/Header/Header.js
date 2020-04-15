@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './Header.scss';
 
@@ -8,16 +9,18 @@ const Header = (props) => {
 
     return (
       <div className="Header">
-        <div className="logo">YTDL</div>
+        <Link to="/">
+          <div className="logo">YTDL</div>
+        </Link>
         {
-          props.user !== null ? (
+          props.user.name !== '' ? (
             <UserLogout
-              user = {props.user}
+              user = {props.user.name}
               logout = {props.logout}
             />
           ) : null
         }
-
+ 
       </div>
 
     )

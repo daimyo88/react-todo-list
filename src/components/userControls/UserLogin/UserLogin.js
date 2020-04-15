@@ -4,6 +4,7 @@ import ButtonContainer from '../../../ui/buttons/ButtonContainer/ButtonContainer
 import Button from '../../../ui/buttons/Button/Button';
 
 import './UserLogin.scss';
+import { Redirect } from 'react-router-dom';
 
 class UserLogin extends Component {
     constructor(props) {
@@ -41,24 +42,29 @@ class UserLogin extends Component {
     }
 
     render() {
+
+      const redirect = this.props.user.name !== '' ? <Redirect to="/tasks" /> : null;
       return (
-        <div className="UserLogin">
-          <h3>Welcome!</h3>
-          <p>To start work please enter your name: </p>
-          <form onSubmit={this.defaultSubmit} >
-            <div className="input-block">
-              { this.state.validationError === true ? (
-                <div className="validation-message">This field should not be empty</div>
-              ) : null }
-              <input onChange={this.changeHandler} type="text" name="username" value={this.state.username}/>
-            </div>
-          </form>
+        <React.Fragment>
+          { redirect }
+          <div className="UserLogin">
+            <h3>Welcome!</h3>
+            <p>To start work please enter your name: </p>
+            <form onSubmit={this.defaultSubmit} >
+              <div className="input-block">
+                { this.state.validationError === true ? (
+                  <div className="validation-message">This field should not be empty</div>
+                ) : null }
+                <input onChange={this.changeHandler} type="text" name="username" value={this.state.username}/>
+              </div>
+            </form>
 
-          <ButtonContainer type="center">
-            <Button type="confirm" title="Enter" clickHandler={this.submitHandler}/>
-          </ButtonContainer>
+            <ButtonContainer type="center">
+              <Button type="confirm" title="Enter" clickHandler={this.submitHandler}/>
+            </ButtonContainer>
 
-        </div>
+          </div>
+        </React.Fragment>
       )
     }
 
